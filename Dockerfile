@@ -1,5 +1,9 @@
 # ------------------- builder stage
-FROM docker.pkg.github.com/gentoo-docker-builds/develop/gendev:latest as builder
+FROM gentoo/stage3-amd64 as builder
+ENV FEATURES="-mount-sandbox -ipc-sandbox -network-sandbox -pid-sandbox -sandbox -usersandbox"
+
+# ------------------- portage tree
+COPY --from=gentoo/portage:latest /var/db/repos/gentoo /var/db/repos/gentoo
 
 # ------------------- emerge
 RUN echo 'dev-python/* ~amd64' >> /etc/portage/package.accept_keywords
