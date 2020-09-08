@@ -33,6 +33,7 @@ jobs:
         run: echo 'Latest available awscli version in portage is' $LATEST
 
   build_image:
+    needs: [check_version]
     runs-on: ubuntu-latest
     steps:
 
@@ -42,6 +43,7 @@ jobs:
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
   push_container:
+    needs: [build_image]
     runs-on: ubuntu-latest
     steps:
 
