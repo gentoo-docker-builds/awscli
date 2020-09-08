@@ -22,12 +22,16 @@ jobs:
   check_version:
     runs-on: ubuntu-latest
     container: ghcr.io/gentoo-docker-builds/gendev:latest
+    outputs:
+      version: ${{ steps.version.outputs.LATEST }}
     steps:
 
       - name: fetch latest available awscli version in portage
         run: |
           version=$(ACCEPT_KEYWORDS="~amd64" emerge -s dev-python/awscli | grep "Latest version available" | awk '{print $4}')
           echo "::set-env name=LATEST::$version"
+          echo "::set-output name=LATEST::$version"
+        id: version
 
       - name: latest awscli version
         run: echo 'Latest available awscli version in portage is' $LATEST
@@ -38,6 +42,9 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
+
+      - name: version check
+        run: echo ${{needs.check_version.outputs.version}}
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
@@ -55,7 +62,7 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           # Strip git ref prefix from portage run
-          VERSION=$LATEST
+          VERSION=${{needs.check_version.outputs.version}}
 
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
