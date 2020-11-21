@@ -26,7 +26,6 @@ jobs:
       - name: fetch latest available awscli version in portage
         run: |
           version=$(ACCEPT_KEYWORDS="~amd64" emerge -s dev-python/awscli | grep "Latest version available" | awk '{print $4}')
-          echo "::set-env name=LATEST::$version"
           echo "::set-output name=LATEST::$version"
         id: version
 
