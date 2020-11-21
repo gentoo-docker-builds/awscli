@@ -47,9 +47,9 @@ jobs:
           PORTAGE_VERSION=${{needs.check_version.outputs.version}} 
           echo "$PORTAGE_VERSION"
           if skopeo inspect docker://ghcr.io/gentoo-docker-builds/awscli:LATEST | grep "$PORTAGE_VERSION"; then
-            echo "no"
+            echo "::set-output name=UPDATE::no"
           else
-            echo "yes"
+            echo "::set-output name=UPDATE::yes"
           fi
                               #if [ $? -eq 0 ];
                     #then
