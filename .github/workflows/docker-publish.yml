@@ -42,7 +42,8 @@ jobs:
 
       - name: comparison
         run: |
-echo "hello"
+          echo "hello"
+          echo "foo"
           #          PORTAGE_VERSION=${{needs.check_version.outputs.version}} 
           #          skopeo inspect docker://ghcr.io/gentoo-docker-builds/awscli:latest | grep -q "1.18.160"
                     #if [ $? -eq 0 ];
