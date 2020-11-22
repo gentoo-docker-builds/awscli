@@ -42,8 +42,6 @@ jobs:
 
       - name: comparison
         run: |
-          echo "hello"
-          echo "foo"
           PORTAGE_VERSION=${{needs.check_version.outputs.version}} 
           echo "$PORTAGE_VERSION"
           if skopeo inspect docker://ghcr.io/gentoo-docker-builds/awscli:LATEST | grep "$PORTAGE_VERSION"; then
@@ -51,16 +49,10 @@ jobs:
           else
             echo "::set-output name=UPDATE::yes"
           fi
-                              #if [ $? -eq 0 ];
-                    #then
-                      #echo "::set-output name=UPDATE::no"
-                    #else
-                      #echo "::set-output name=UPDATE::yes"
-                    #fi
         id: version
 
   build_and_push:
-    needs: [check_image_version]
+    needs: [check_version, check_image_version]
     if: needs.check_image_version.outputs.version == 'yes'
     runs-on: ubuntu-latest
     steps:
