@@ -15,6 +15,16 @@ RUN ROOT=/awscli emerge --quiet -C \
       virtual/* \
       sys-libs/ncurses
 
+# ------------------- detox
+RUN rm -rf \
+        /awscli/usr/share/doc \
+        /awscli/usr/share/eselect \
+        /awscli/usr/share/info \
+        /awscli/usr/share/man \
+        /awscli/var/lib/gentoo \
+        /awscli/var/lib/portage \
+        /awscli/var/cache/edb
+
 # ------------------- empty image
 FROM scratch
 COPY --from=builder /awscli /
