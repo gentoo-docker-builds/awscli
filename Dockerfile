@@ -2,9 +2,9 @@
 FROM ghcr.io/gentoo-docker-builds/gendev:latest as builder
 
 # ------------------- emerge
-RUN echo 'dev-python/* ~amd64' >> /etc/portage/package.accept_keywords
 RUN emerge -C sandbox
-RUN echo 'dev-python/awscli minimal python_targets_python3_7 xml ssl' >> /etc/portage/package.use/awscli
+COPY portage/awscli.use /etc/portage/package.use/awscli
+COPY portage/awscli.accept_keywords /etc/portage/package.accept_keywords/awscli
 RUN ROOT=/awscli FEATURES='-usersandbox' emerge dev-python/awscli
 
 # ------------------- shrink
