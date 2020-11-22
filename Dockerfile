@@ -17,6 +17,7 @@ RUN ROOT=/awscli emerge --quiet -C \
 
 # ------------------- detox
 RUN rm -rf \
+        /awscli/var/db/pkg \
         /awscli/usr/share/doc \
         /awscli/usr/share/eselect \
         /awscli/usr/share/info \
